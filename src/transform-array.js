@@ -32,13 +32,20 @@ module.exports = transform = array => {
       if (/--double-next/.test(prevItem)) {
         amount++
       }
+      if (/--discard-next/.test(prevItem)) {
+        return undefined
+      }
       if (/--double-prev/.test(nextItem)) {
         amount++
       }
 
+      if (/--discard-prev/.test(nextItem)) {
+        amount--
+      }
+
       return {
         value: item,
-        discard: discardRegExp.test(prevItem) || discardRegExp.test(nextItem),
+        //discard: discardRegExp.test(prevItem) || discardRegExp.test(nextItem),
         amount: amount,
       }
     }
@@ -49,7 +56,10 @@ module.exports = transform = array => {
     if (escapeSequences.includes(item)) {
       return false
     }
-    if (typeof item === 'object' && item.discard === true) {
+    if (typeof item === 'object' && item.amount < 1) {
+      return false
+    }
+    if (item === undefined) {
       return false
     }
     return true
