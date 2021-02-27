@@ -2,15 +2,85 @@ class VigenereCipheringMachine {
   constructor(type = true) {
     this.type = type
   }
-  encrypt(message, key) {
-    const messageArray = [...message]
-    const keyString = []
 
-    for (let i = 0; i < message.length; i++) {
-      keyString.push(i >= key.length ? key[i - key.length] : key[i])
-    }
+  _getAlphabet() {
+    return 'abcdefghijklmnopqrstuvwxyz'
   }
-  decrypt(message, key) {}
+
+  _getCode(array) {
+    let returnArray = array.map((char) => {
+      if (/[a-z]/i.test(char)) {
+        return this._getAlphabet().indexOf(char.toLowerCase())
+      } else {
+        return String(char)
+      }
+    })
+
+    return returnArray
+  }
+
+  _getKeyPhrase(message, key) {
+    let offset = 0
+
+    let returnArray = message.map((item, index) => {
+      if (/[a-z]/i.test(item)) {
+        return key[(index - offset) % key.length]
+      } else {
+        offset++
+        return ''
+      }
+    })
+
+    return returnArray
+  }
+
+  _getResultCode(messageCode, keyPhraseCode, sign) {
+    let returnArray = messageCode.map((code, index) => {
+      if (typeof code === 'number') {
+        return sign === '+'
+          ? (code + keyPhraseCode[index]) % 26
+          : (code - keyPhraseCode[index] + 26) % 26
+      } else {
+        return code + keyPhraseCode[index]
+      }
+    })
+
+    return returnArray
+  }
+
+  _getLetters(codeArray) {
+    let returnArray = codeArray.map((code) => {
+      if (typeof code === 'number') {
+        return this._getAlphabet()[code].toUpperCase()
+      } else {
+        return code
+      }
+    })
+    return returnArray
+  }
+
+  encrypt(message, key) {
+    if (message === undefined || key === undefined) {
+      throw new Error()
+    }
+
+    let messageCode = this._getCode([...message])
+
+    let keyPhrase = this._getKeyPhrase([...message], [...key])
+    let keyPhraseCode = this._getCode(keyPhrase)
+    let resultCode = this._getResultCode(messageCode, keyPhraseCode, '+')
+    let cypherPhrase = this._getLetters(resultCode).join('')
+    return cypherPhrase
+  }
+  decrypt(cypher, key) {
+    let cypherCode = this._getCode([...cypher])
+
+    let keyPhrase = this._getKeyPhrase([...cypher], [...key])
+    let keyPhraseCode = this._getCode(keyPhrase)
+    let resultCode = this._getResultCode(cypherCode, keyPhraseCode, '-')
+    let message = this._getLetters(resultCode).join('')
+    return message
+  }
 }
 
 module.exports = VigenereCipheringMachine
