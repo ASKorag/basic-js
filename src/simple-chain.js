@@ -1,13 +1,13 @@
 const chainMaker = {
-  _chainArray: [],
+  _chainArr: [],
   getLength() {
-    return Math.floor((this._chainArray.length + 1) / 2)
+    return Math.floor((this._chainArr.length + 1) / 2)
   },
   addLink(value = '') {
     if (this.getLength() === 0) {
-      this._chainArray.push(`( ${value} )`)
+      this._chainArr.push(`( ${value} )`)
     } else {
-      this._chainArray.push('~~', `( ${value} )`)
+      this._chainArr.push('~~', `( ${value} )`)
     }
 
     return this
@@ -18,26 +18,26 @@ const chainMaker = {
       position < 0 ||
       position > this.getLength()
     ) {
-      this._chainArray = []
+      this._chainArr = []
       throw new Error()
     }
 
     if (position === 1) {
-      this._chainArray.splice(0, 2)
+      this._chainArr.splice(0, 2)
     } else {
-      const positionInArray = 2 * (position - 1)
-      this._chainArray.splice(positionInArray - 1, 2)
+      const positionInArr = 2 * (position - 1)
+      this._chainArr.splice(positionInArr - 1, 2)
     }
 
     return this
   },
   reverseChain() {
-    this._chainArray.reverse()
+    this._chainArr.reverse()
     return this
   },
   finishChain() {
-    const returnChain = this._chainArray.join('')
-    this._chainArray = []
+    const returnChain = this._chainArr.join('')
+    this._chainArr = []
     return returnChain
   },
 }

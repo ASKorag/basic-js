@@ -1,9 +1,9 @@
-module.exports = calculateHanoi = (disksNumber, turnsSpeed) => {
-  const minimalNumberOfMoves = 2 ** disksNumber - 1
+module.exports = calculateHanoi = (disksAmount, turnsSpeed) => {
+  const numberOfMoves = 2 ** disksAmount - 1
   const turnsSpeedPerSecond = turnsSpeed / 3600
 
   return {
-    turns: minimalNumberOfMoves,
-    seconds: Math.floor(minimalNumberOfMoves / turnsSpeedPerSecond),
+    turns: numberOfMoves,
+    seconds: Math.floor(numberOfMoves / turnsSpeedPerSecond),
   }
 }

@@ -1,7 +1,7 @@
-module.exports = countCats = array => {
+module.exports = countCats = (arr) => {
   return (
-    array
-      .map(item => item.join())
+    arr
+      .map((item) => item.join())
       .join()
       .match(/(^|,)\^\^/g) || []
   ).length

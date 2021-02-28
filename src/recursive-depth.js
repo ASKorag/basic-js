@@ -1,14 +1,14 @@
 module.exports = class DepthCalculator {
-  calculateDepth(array) {
-    if (array.every(item => !Array.isArray(item))) {
+  calculateDepth(arr) {
+    if (arr.every((item) => !Array.isArray(item))) {
       return 1
     } else {
-      const newArray = []
-      array
-        .filter(item => Array.isArray(item))
-        .map(item => newArray.push(...item))
+      const newArr = []
+      arr
+        .filter((item) => Array.isArray(item))
+        .map((item) => newArr.push(...item))
 
-      return 1 + this.calculateDepth(newArray)
+      return 1 + this.calculateDepth(newArr)
     }
   }
 }

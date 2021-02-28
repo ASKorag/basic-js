@@ -7,26 +7,21 @@ module.exports = repeater = (str, options) => {
     additionSeparator = '|',
   } = options
 
-  let additionArray = []
+  const additionStr = formStr(addition, additionRepeatTimes, additionSeparator)
 
-  for (let i = 0; i < additionRepeatTimes; i++) {
-    additionArray.push(
-      String(addition),
-      i === additionRepeatTimes - 1 ? '' : additionSeparator
-    )
+  return formStr(str, repeatTimes, separator, additionStr)
+
+  function formStr(str, amount, separator, addition) {
+    const arr = []
+
+    for (let i = 0; i < amount; i++) {
+      if (addition === undefined) {
+        arr.push(String(str), i === amount - 1 ? '' : separator)
+      } else {
+        arr.push(String(str), addition, i === amount - 1 ? '' : separator)
+      }
+    }
+
+    return arr.join('')
   }
-
-  let additionString = additionArray.join('')
-
-  let result = []
-
-  for (let i = 0; i < repeatTimes; i++) {
-    result.push(
-      String(str),
-      additionString,
-      i === repeatTimes - 1 ? '' : separator
-    )
-  }
-
-  return result.join('')
 }

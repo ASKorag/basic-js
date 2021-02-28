@@ -1,5 +1,5 @@
-module.exports = transform = (array) => {
-  if (!Array.isArray(array)) {
+module.exports = transform = (arr) => {
+  if (!Array.isArray(arr)) {
     throw new Error()
   }
 
@@ -7,9 +7,9 @@ module.exports = transform = (array) => {
   const prevRegExp = /--(discard|double)-prev/
   const nextRegExp = /--(discard|double)-next/
 
-  let changedArray = array.map((item, index) => {
-    const prevItem = array[index - 1]
-    const nextItem = array[index + 1]
+  let changedArr = arr.map((item, index) => {
+    const prevItem = arr[index - 1]
+    const nextItem = arr[index + 1]
 
     //returned unchanged element
     if (
@@ -54,19 +54,17 @@ module.exports = transform = (array) => {
     }
   })
 
-  const transformedArray = []
+  const transformedArr = []
 
-  for (let item of changedArray) {
-    if (typeof item === 'object' && item.hasOwnProperty('value')) {
-      if (item.amount !== undefined) {
-        transformedArray.push(...Array(item.amount).fill(item.value))
-      }
+  for (let item of changedArr) {
+    if (item.amount !== undefined) {
+      transformedArr.push(...Array(item.amount).fill(item.value))
     } else {
-      if (!controlSeqRegExp.test(item)) {
-        transformedArray.push(item)
+      if (!controlSeqRegExp.test(item) && item.discard === undefined) {
+        transformedArr.push(item)
       }
     }
   }
 
-  return transformedArray
+  return transformedArr
 }
